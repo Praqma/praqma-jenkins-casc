@@ -3,12 +3,12 @@ jenkins:
 
   credentials: 
     system:
-        ? # "global"
-        : - usernamePassword:
-              scope: SYSTEM
-              id: github-user
-              username: ReleasePraqma
-              password: ${github}
+      ? # "global"
+      : - usernamePassword:
+            scope: SYSTEM
+            id: github-user
+            username: ReleasePraqma
+            password: ${github}
 
 
 
