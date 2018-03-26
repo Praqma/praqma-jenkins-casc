@@ -1,16 +1,11 @@
 jenkins:
   systemMessage: "Demo site for Jenkins Configuration as Code plugin"
 
-credentials: 
+credentials:
   system:
     ? # "global"
     : - usernamePassword:
-          scope: SYSTEM
-          id: github-user
+          scope:    SYSTEM
+          id:       github-user
           username: ReleasePraqma
           password: ${github}
-
-
-
-
-
