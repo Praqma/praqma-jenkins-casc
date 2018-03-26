@@ -1,0 +1,17 @@
+version: '3.3'
+
+services:
+  jenkins: 
+    build: ./master
+    ports: 
+      - 80:8080
+      - 50000:5000
+    volumes:
+      - jenkins_home:/var/jenkins_home
+    secrets:
+      github:
+        file: /var/deploy/secrets/github
+    environment:
+      - CASC_JENKINS_CONFIG=https://raw.githubusercontent.com/Praqma/praqma-jenkins-casc/master/jenkins.yaml
+volumes:
+  jenkins_home:
