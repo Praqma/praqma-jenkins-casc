@@ -1,6 +1,22 @@
 jenkins:
-  systemMessage: "Demo site for Jenkins Configuration as Code plugin"
+  systemMessage: ${adminpw}
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+       - id: demoAdmin
+         password: ${adminpw}
 
+  authorizationStrategy:
+    globalMatrix:
+      grantedPermissions:
+        - name: "anonymous"
+          permissions:
+           - "Overall/Read"
+        - name: "authenticated"
+          permissions:
+           - "Overall/Administer"                    
+           
 credentials:
   system:
     ? # "global"
