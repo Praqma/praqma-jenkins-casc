@@ -9,9 +9,9 @@ services:
     volumes:
       - jenkins_home:/var/jenkins_home
     secrets:
-      - github 
+      - github
     environment:
-      - CASC_JENKINS_CONFIG=https://raw.githubusercontent.com/Praqma/praqma-jenkins-casc/dev/jenkins.yaml
+      - CASC_JENKINS_CONFIG=https://raw.githubusercontent.com/Praqma/praqma-jenkins-casc/master/jenkins.yaml
 secrets:
   github:
     file: /var/deploy/secrets/github

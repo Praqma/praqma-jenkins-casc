@@ -1,1 +1,3 @@
 credentials:2.1.16
+git:3.8.0
+ssh-slaves:1.26
