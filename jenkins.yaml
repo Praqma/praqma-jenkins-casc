@@ -1,5 +1,5 @@
 jenkins:
-  systemMessage: ${adminpw}
+  systemMessage: "Welcome to the demo setup for Jenkins Configuration as Code plugin"
   securityRealm:
     local:
       allowsSignup: false
