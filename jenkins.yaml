@@ -6,7 +6,8 @@ jenkins:
       users:
        - id: demoAdmin
          password: ${adminpw}
-
+       - id: test
+         password: test
   authorizationStrategy:
     globalMatrix:
       grantedPermissions:
@@ -15,8 +16,7 @@ jenkins:
            - "Overall/Read"
         - name: "authenticated"
           permissions:
-           - "Overall/Administer"                    
-           
+           - "Overall/Administer"                            
 credentials:
   system:
     ? # "global"
@@ -25,3 +25,18 @@ credentials:
           id:       github-user
           username: ReleasePraqma
           password: ${github}
+jobs:
+  - >
+      multibranchPipelineJob('demo1-example') {
+        branchSources {
+          git {
+            remote('https://github.com/Praqma/praqma-jenkins-casc-demo1-example')
+          }
+        }
+      }
+  - > 
+      multibranchPipelineJob('demo2-example') {
+        branchSources {
+          remote('https://github.com/Praqma/praqma-jenkins-casc-demo1-example')
+        }
+      }
