@@ -37,6 +37,8 @@ jobs:
   - > 
       multibranchPipelineJob('demo2-example') {
         branchSources {
-          remote('https://github.com/Praqma/praqma-jenkins-casc-demo1-example')
+          git {
+            remote('https://github.com/Praqma/praqma-jenkins-casc-demo1-example')
+          }
         }
       }
