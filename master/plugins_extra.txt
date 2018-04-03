@@ -3,3 +3,5 @@ git:3.8.0
 ssh-slaves:1.26
 warnings:4.66
 matrix-auth:2.2
+job-dsl:1.68
+workflow-aggregator:2.5

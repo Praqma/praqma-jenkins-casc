@@ -6,17 +6,39 @@ jenkins:
       users:
        - id: demoAdmin
          password: ${adminpw}
-
   authorizationStrategy:
     globalMatrix:
       grantedPermissions:
         - name: "anonymous"
           permissions:
            - "Overall/Read"
+           - "Job/Read"
+           - "View/Read"
         - name: "authenticated"
           permissions:
-           - "Overall/Administer"                    
-           
+           - "Overall/Administer"
+  globalLibraries:
+    libraries:
+      - name: "demo-lib"
+        retriever:
+          modernSCM:
+            scm:
+              git:
+                remote: "https://github.com/Praqma/praqma-jenkins-casc-shared-lib-demo"                                       
+  warnings:
+    parsers:
+      - name: "Example parser"
+        linkName: "Example parser link"
+        trendName: "Example parser trend name"
+        regexp: "^\\s*(.*):(\\d+):(.*):\\s*(.*)$"
+        script: |
+          import hudson.plugins.warnings.parser.Warning
+          String fileName = matcher.group(1)
+          String lineNumber = matcher.group(2)
+          String category = matcher.group(3)
+          String message = matcher.group(4)
+          return new Warning(fileName, Integer.parseInt(lineNumber), "Dynamic Parser", category, message);
+        example: "somefile.txt:2:SeriousWarnings:SomethingWentWrong"           
 credentials:
   system:
     ? # "global"
@@ -25,3 +47,22 @@ credentials:
           id:       github-user
           username: ReleasePraqma
           password: ${github}
+jobs:
+  - >
+      multibranchPipelineJob('demo1-example') {
+        description("Example job that uses and configures the warnings plugin and makes use of a global library")
+        branchSources {
+          git {
+            remote('https://github.com/Praqma/praqma-jenkins-casc-demo1-example')
+          }
+        }
+      }
+  - > 
+      multibranchPipelineJob('demo2-example') {
+        description("A generic software build")
+        branchSources {
+          git {
+            remote('https://github.com/Praqma/praqma-jenkins-casc-demo1-example')
+          }
+        }
+      }
