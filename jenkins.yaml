@@ -16,7 +16,15 @@ jenkins:
            - "Overall/Read"
         - name: "authenticated"
           permissions:
-           - "Overall/Administer"                            
+           - "Overall/Administer"
+  globalLibraries:
+    libraries:
+      - name: "demo-lib"
+        retriever:
+          modernSCM:
+            scm:
+              git:
+                remote: "https://github.com/Praqma/praqma-jenkins-casc-shared-lib-demo"                                       
   warnings:
     parsers:
       - name: "Example parser"
@@ -42,6 +50,7 @@ credentials:
 jobs:
   - >
       multibranchPipelineJob('demo1-example') {
+        description("Example job that uses and configures the warnings plugin and makes use of a global library")
         branchSources {
           git {
             remote('https://github.com/Praqma/praqma-jenkins-casc-demo1-example')
@@ -50,6 +59,7 @@ jobs:
       }
   - > 
       multibranchPipelineJob('demo2-example') {
+        description("A generic software build")
         branchSources {
           git {
             remote('https://github.com/Praqma/praqma-jenkins-casc-demo1-example')
