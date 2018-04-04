@@ -1,5 +1,5 @@
-FROM praqma/jenkins4casc 
-#TODO: Autobuild is broken atm. Rely on release version upon completion
+FROM praqma/jenkins4casc:0.2-alpha-latest 
+
 LABEL maintainer="man@praqma.net" 
 COPY plugins_extra.txt /usr/share/jenkins/ref/plugins_extra.txt
 

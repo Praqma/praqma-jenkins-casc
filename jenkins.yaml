@@ -1,5 +1,5 @@
 jenkins:
-  systemMessage: "Welcome to the demo setup for Jenkins Configuration as Code plugin"
+  systemMessage: "Welcome to the demo setup for Jenkins Configuration as Code plugin. For more information look in the official repo with our demo setup: https://github.com/Praqma/praqma-jenkins-casc"
   securityRealm:
     local:
       allowsSignup: false
