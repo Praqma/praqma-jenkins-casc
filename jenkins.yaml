@@ -17,6 +17,35 @@ jenkins:
         - name: "authenticated"
           permissions:
            - "Overall/Administer"
+#  nodes:
+#    - dumb:
+#        labelString: "build jnlp"
+#        mode: NORMAL
+#        name: "build-agent-jnlp"
+#        remoteFS: "/home/agent/ws" 
+#        launcher:
+#          jnlp:
+#            workDirSettings:
+#              disabled: true
+#              workDirPath: 
+#              internalDir:
+#              failIfWorkDirIsMissing: false
+#    - dumb:
+#        labelString: "build ssh"
+#        mode: NORMAL
+#        name: "build-agent-ssh"
+#        remoteFS: "/home/agent/ws" 
+#        launcher:
+#          SSHLauncher:
+#            host: "localhost"
+#            port: 22
+#            credentialsId: agent-private-key
+#            launchTimeoutSeconds: 20
+#            maxNumRetries: 2
+#            retryWaitTime: 15
+#            sshHostKeyVerificationStrategy:
+#              manuallyTrustedKeyVerificationStrategy:
+#                requireInitialManualTrust: false
   globalLibraries:
     libraries:
       - name: "demo-lib"
@@ -39,6 +68,7 @@ jenkins:
           String message = matcher.group(4)
           return new Warning(fileName, Integer.parseInt(lineNumber), "Dynamic Parser", category, message);
         example: "somefile.txt:2:SeriousWarnings:SomethingWentWrong"           
+
 credentials:
   system:
     ? # "global"
@@ -47,6 +77,15 @@ credentials:
           id:       github-user
           username: ReleasePraqma
           password: ${github}
+      - basicSSHUserPrivateKey:
+          scope: SYSTEM
+          id: agent-private-key
+          username: agentuser
+          passphrase: 
+          description: "ssh private key used to connect ssh slaves"
+          privateKeySource:
+            directEntry:
+              privateKey: ${agent_private_key}
 jobs:
   - >
       multibranchPipelineJob('demo1-example') {

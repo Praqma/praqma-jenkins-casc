@@ -1,6 +1,16 @@
 version: '3.3'
 
 services:
+  #jnlp-agent:
+  #  depends_on:
+  #    - jenkins
+  #  image: jenkins/jnlp-slave  
+  #  command: -url http://jenkins:8080 
+  #  restart: always
+  #  environment:
+  #    JAVA_OPTS: "-Djava.awt.headless=true"
+  #    JENKINS_SECRET: "cf7d7136bae12e417f87564249517ba94a2332879f40dbbc994b09736b5b8539" 
+  #    JENKINS_AGENT_NAME: "build-agent-jnlp"
   jenkins: 
     build: 
       context: ./master
@@ -8,12 +18,13 @@ services:
         JAVA_OPTS: '-Djenkins.CLI.disabled=true'
     ports: 
       - 80:8080
-      - 50000:5000
+      - 50000:50000
     volumes:
       - jenkins_home:/var/jenkins_home
     secrets:
-      - github
-      - adminpw
+      - github   #Github username with password as an example
+      - adminpw  #Initial adminstrator user password 
+      - agent_private_key    #ssh private key for connecting ssh slaves
     environment:
       - CASC_JENKINS_CONFIG=https://raw.githubusercontent.com/Praqma/praqma-jenkins-casc/master/jenkins.yaml
 secrets:
@@ -21,5 +32,7 @@ secrets:
     file: /var/deploy/secrets/github
   adminpw:
     file: /var/deploy/secrets/adminpw
+  agent_private_key:
+    file: ~/.ssh/id_rsa
 volumes:
   jenkins_home:
