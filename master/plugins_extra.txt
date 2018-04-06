@@ -5,3 +5,4 @@ warnings:4.66
 matrix-auth:2.2
 job-dsl:1.68
 workflow-aggregator:2.5
+timestamper:1.8.9
