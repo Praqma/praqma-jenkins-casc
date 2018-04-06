@@ -118,5 +118,9 @@ jobs:
 tool:
   git:
     installations:
-      - name: mvn
-        home: "mvn" 
+      - name: Default
+        home: "git"
+  maven:
+    installations:
+      - name: Default
+
