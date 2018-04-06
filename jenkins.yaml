@@ -114,3 +114,10 @@ jobs:
           }
         }
       }
+tool:
+  maven:
+    installations:
+      - name: mvn
+        installSource:
+          installers:
+            maven:
