@@ -26,7 +26,7 @@ services:
       - adminpw  #Initial adminstrator user password 
       - agent_private_key    #ssh private key for connecting ssh slaves
     environment:
-      - CASC_JENKINS_CONFIG=https://raw.githubusercontent.com/Praqma/praqma-jenkins-casc/master/jenkins.yaml
+      - CASC_JENKINS_CONFIG=https://raw.githubusercontent.com/Praqma/praqma-jenkins-casc/demo2/jenkins.yaml
 secrets:
   github:
     file: /var/deploy/secrets/github
