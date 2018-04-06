@@ -114,7 +114,8 @@ jobs:
           }
         }
       }
-#tool:
-#  maven:
-#    installations:
-#      - name: "mvn"
+
+tool:
+  maven:
+    installations:
+      - name: mvn
