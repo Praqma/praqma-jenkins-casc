@@ -106,11 +106,11 @@ jobs:
         }
       }
   - > 
-      multibranchPipelineJob('demo2-example') {
-        description("A generic software build")
+      multibranchPipelineJob('Configuration as Code plugin') {
+        description("Building the configuration as code plugin from jenkins-ci.org")
         branchSources {
           git {
-            remote('https://github.com/Praqma/praqma-jenkins-casc-demo1-example')
+            remote('https://github.com/jenkinsci/configuration-as-code-plugin.git')
           }
         }
       }
