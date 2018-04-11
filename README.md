@@ -10,7 +10,9 @@ The demo we've prepared here also expects two secrets (files) to be present:
 1. `/var/deploy/secrets/github` 
 2. `/var/deploy/secrets/adminpw`
 
-The first one is a secret for your github user account (One with write access) to github repositories. For this demo we've used our own user `ReleasePraqma` and provided the appropriate password. The second password is for the one Admin user we add to our server with the id `demoAdmin`. 
+The first one is a secret for your github user account (One with write access) to github repositories. For this demo we've used our own user `ReleasePraqma` and provided the appropriate password. This user has write access so that we can push tags etc. with the Git Publisher plugin. 
+
+The second password is for the one Admin user we add to our server with the id `demoAdmin`. This `demoAdmin` user is added for debugging purposes.  
 
 ## First boot 
 

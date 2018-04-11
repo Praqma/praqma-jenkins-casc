@@ -85,6 +85,7 @@ credentials:
           scope:    SYSTEM
           id:       github-user
           username: ReleasePraqma
+          # The key 'github' resolved from a docker secret defined in docker-compose.yml
           password: ${github}
       - basicSSHUserPrivateKey:
           scope: SYSTEM
@@ -93,7 +94,7 @@ credentials:
           passphrase: 
           description: "ssh private key used to connect ssh slaves"
           privateKeySource:
-            directEntry:
+            directEntry: # The key 'agent_private_key' resolved from a docker secret defined in docker-compose.yml          
               privateKey: ${agent_private_key}
 jobs:
   - >

@@ -12,27 +12,27 @@ services:
   #    JENKINS_SECRET: "cf7d7136bae12e417f87564249517ba94a2332879f40dbbc994b09736b5b8539" 
   #    JENKINS_AGENT_NAME: "build-agent-jnlp"
   jenkins: 
-    build: 
+    build: #TODO: Once plugin installation is handled through c-as-c this can be removed and replaced with 'image'.
       context: ./master
       args:
-        JAVA_OPTS: '-Djenkins.CLI.disabled=true'
+        JAVA_OPTS: '-Djenkins.CLI.disabled=true' #Disable remoting cli. TODO: This can be done via casc and jenkins.yaml
     ports: 
       - 80:8080
       - 50000:50000
     volumes:
       - jenkins_home:/var/jenkins_home
     secrets:
-      - github   #Github username with password as an example
-      - adminpw  #Initial adminstrator user password 
-      - agent_private_key    #ssh private key for connecting ssh slaves
+      - github  #Github username with password as an example. Purpose here is to have a user with write-access for special cases. Like the git-publisher.
+      - adminpw  #Initial adminstrator user password. Added for debugging purposes. Should be removed prior to go-live. 
+      - agent_private_key #ssh private key for connecting ssh slaves
     environment:
-      - CASC_JENKINS_CONFIG=https://raw.githubusercontent.com/Praqma/praqma-jenkins-casc/master/jenkins.yaml
-secrets:
+      - CASC_JENKINS_CONFIG=https://raw.githubusercontent.com/Praqma/praqma-jenkins-casc/master/jenkins.yaml #Use a github repo. Be aware that the raw content is cached, so it can take a couple of mintues to take effect
+secrets: #Be careful with newlines in your secrets, make sure to remove them before running docker-compose up.
   github:
     file: /var/deploy/secrets/github
   adminpw:
     file: /var/deploy/secrets/adminpw
-  agent_private_key:
+  agent_private_key: #This should point to the private key you want your jenkins master to use when connecting to slaves. So in AWS for example this would be your .pem file
     file: ~/.ssh/id_rsa
 volumes:
   jenkins_home:
