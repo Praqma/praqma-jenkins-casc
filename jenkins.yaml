@@ -48,8 +48,8 @@ jenkins:
 #                requireInitialManualTrust: false
 credentials:
   system:
-    ? # "global"
-    : - usernamePassword:
+    domainCredentials:
+      - usernamePassword:
           scope:    SYSTEM
           id:       github-user
           username: ReleasePraqma
@@ -89,7 +89,7 @@ tool:
     installations:
       - name: Default
         home: "git"
-        
+
 unclassified:
   warnings:
     parsers:
