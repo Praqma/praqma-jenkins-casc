@@ -12,10 +12,7 @@ services:
   #    JENKINS_SECRET: "cf7d7136bae12e417f87564249517ba94a2332879f40dbbc994b09736b5b8539" 
   #    JENKINS_AGENT_NAME: "build-agent-jnlp"
   jenkins: 
-    build: #TODO: Once plugin installation is handled through c-as-c this can be removed and replaced with 'image'.
-      context: ./master
-      args:
-        JAVA_OPTS: '-Djenkins.CLI.disabled=true' #Disable remoting cli. TODO: This can be done via casc and jenkins.yaml
+    image: praqma/jenkins4casc:0.7-alpha
     ports: 
       - 80:8080
       - 50000:50000
