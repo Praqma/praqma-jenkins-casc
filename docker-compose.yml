@@ -23,7 +23,7 @@ services:
       - adminpw  #Initial adminstrator user password. Added for debugging purposes. Should be removed prior to go-live. 
       - agent_private_key #ssh private key for connecting ssh slaves
     environment:
-      - CASC_JENKINS_CONFIG=https://raw.githubusercontent.com/Praqma/praqma-jenkins-casc/master/jenkins.yaml #Use a github repo. Be aware that the raw content is cached, so it can take a couple of mintues to take effect
+      - CASC_JENKINS_CONFIG=https://raw.githubusercontent.com/Praqma/praqma-jenkins-casc/dev/jenkins.yaml #Use a github repo. Be aware that the raw content is cached, so it can take a couple of mintues to take effect
 secrets: #Be careful with newlines in your secrets, make sure to remove them before running docker-compose up.
   github:
     file: /var/deploy/secrets/github

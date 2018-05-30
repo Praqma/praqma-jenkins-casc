@@ -1,22 +1,22 @@
 jenkins:
   systemMessage: "Welcome to the demo setup for Jenkins Configuration as Code plugin. For more information look in the official repo with our demo setup: https://github.com/Praqma/praqma-jenkins-casc"
-  securityRealm:
-    local:
-      allowsSignup: false
-      users:
-       - id: demoAdmin
-         password: ${adminpw:-secr3t}
-  authorizationStrategy:
-    globalMatrix:
-      grantedPermissions:
-        - name: "anonymous"
-          permissions:
-           - "Overall/Read"
-           - "Job/Read"
-           - "View/Read"
-        - name: "authenticated"
-          permissions:
-           - "Overall/Administer"
+#  securityRealm:
+#    local:
+#      allowsSignup: false
+#      users:
+#       - id: demoAdmin
+#         password: ${adminpw:-secr3t}
+#  authorizationStrategy:
+#    globalMatrix:
+#      grantedPermissions:
+#        - name: "anonymous"
+#          permissions:
+#           - "Overall/Read"
+#           - "Job/Read"
+#           - "View/Read"
+#        - name: "authenticated"
+#          permissions:
+#           - "Overall/Administer"
 #  nodes:
 #    - dumb:
 #        labelString: "build jnlp"
@@ -46,43 +46,43 @@ jenkins:
 #            sshHostKeyVerificationStrategy:
 #              manuallyTrustedKeyVerificationStrategy:
 #                requireInitialManualTrust: false
-credentials:
-  system:
-    domainCredentials:
-      - usernamePassword:
-          scope:    SYSTEM
-          id:       github-user
-          username: ReleasePraqma
-          # The key 'github' resolved from a docker secret defined in docker-compose.yml
-          password: ${github}
-      - basicSSHUserPrivateKey:
-          scope: SYSTEM
-          id: agent-private-key
-          username: agentuser
-          passphrase: 
-          description: "ssh private key used to connect ssh slaves"
-          privateKeySource:
-            directEntry: # The key 'agent_private_key' resolved from a docker secret defined in docker-compose.yml          
-              privateKey: ${agent_private_key}
-jobs:
-  - >
-      multibranchPipelineJob('demo1-example') {
-        description("Example job that uses and configures the warnings plugin and makes use of a global library")
-        branchSources {
-          git {
-            remote('https://github.com/Praqma/praqma-jenkins-casc-demo1-example')
-          }
-        }
-      }
-  - > 
-      multibranchPipelineJob('Configuration as Code plugin') {
-        description("Building the configuration as code plugin from jenkins-ci.org")
-        branchSources {
-          git {
-            remote('https://github.com/jenkinsci/configuration-as-code-plugin.git')
-          }
-        }
-      }
+#credentials:
+#  system:
+#    domainCredentials:
+#      - usernamePassword:
+#          scope:    SYSTEM
+#          id:       github-user
+#          username: ReleasePraqma
+#          # The key 'github' resolved from a docker secret defined in docker-compose.yml
+#          password: ${github}
+#      - basicSSHUserPrivateKey:
+#          scope: SYSTEM
+#          id: agent-private-key
+#          username: agentuser
+#          passphrase: 
+#          description: "ssh private key used to connect ssh slaves"
+#          privateKeySource:
+#            directEntry: # The key 'agent_private_key' resolved from a docker secret defined in docker-compose.yml          
+#              privateKey: ${agent_private_key}
+#jobs:
+#  - >
+#      multibranchPipelineJob('demo1-example') {
+#        description("Example job that uses and configures the warnings plugin and makes use of a global library")
+#        branchSources {
+#          git {
+#            remote('https://github.com/Praqma/praqma-jenkins-casc-demo1-example')
+#          }
+#        }
+#      }
+#  - > 
+#      multibranchPipelineJob('Configuration as Code plugin') {
+#        description("Building the configuration as code plugin from jenkins-ci.org")
+#        branchSources {
+#          git {
+#            remote('https://github.com/jenkinsci/configuration-as-code-plugin.git')
+#          }
+#        }
+#      }
 
 tool:
   git:
@@ -90,37 +90,37 @@ tool:
       - name: Default
         home: "git"
         
-unclassified:
-  warnings:
-    parsers:
-      - name: "Example parser"
-        linkName: "Example parser link"
-        trendName: "Example parser trend name"
-        regexp: "^\\s*(.*):(\\d+):(.*):\\s*(.*)$"
-        script: |
-          import hudson.plugins.warnings.parser.Warning
-          String fileName = matcher.group(1)
-          String lineNumber = matcher.group(2)
-          String category = matcher.group(3)
-          String message = matcher.group(4)
-          return new Warning(fileName, Integer.parseInt(lineNumber), "Dynamic Parser", category, message);
-        example: "somefile.txt:2:SeriousWarnings:SomethingWentWrong"        
-  globalLibraries:
-    libraries:
-      - name: "demo-lib"
-        retriever:
-          modernSCM:
-            scm:
-              git:
-                remote: "https://github.com/Praqma/praqma-jenkins-casc-shared-lib-demo"
-      - name: "jenkins-infra"
-        implicit: true
-        defaultVersion: "master"
-        retriever:
-          modernSCM:
-            scm:
-              git:
-                remote: "https://github.com/jenkins-infra/pipeline-library"           
+#unclassified:
+#  warnings:
+#    parsers:
+#      - name: "Example parser"
+#        linkName: "Example parser link"
+#        trendName: "Example parser trend name"
+#        regexp: "^\\s*(.*):(\\d+):(.*):\\s*(.*)$"
+#        script: |
+#          import hudson.plugins.warnings.parser.Warning
+#          String fileName = matcher.group(1)
+#          String lineNumber = matcher.group(2)
+#          String category = matcher.group(3)
+#          String message = matcher.group(4)
+#          return new Warning(fileName, Integer.parseInt(lineNumber), "Dynamic Parser", category, message);
+#        example: "somefile.txt:2:SeriousWarnings:SomethingWentWrong"        
+#  globalLibraries:
+#    libraries:
+#      - name: "demo-lib"
+#        retriever:
+#          modernSCM:
+#            scm:
+#              git:
+#                remote: "https://github.com/Praqma/praqma-jenkins-casc-shared-lib-demo"
+#      - name: "jenkins-infra"
+#        implicit: true
+#        defaultVersion: "master"
+#        retriever:
+#          modernSCM:
+#            scm:
+#              git:
+#                remote: "https://github.com/jenkins-infra/pipeline-library"           
 plugins:
   required:
     credentials: 2.1.16
