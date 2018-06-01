@@ -17,6 +17,8 @@ jenkins:
         - name: "authenticated"
           permissions:
            - "Overall/Administer"
+  crumbIssuer:
+    standard:
 #  nodes:
 #    - dumb:
 #        labelString: "build jnlp"
@@ -89,6 +91,10 @@ tool:
     installations:
       - name: Default
         home: "git"
+
+security:
+  remotingCLI:
+    enabled: false
 
 unclassified:
   warnings:

@@ -14,8 +14,6 @@ services:
   jenkins: 
     build: #TODO: Once plugin installation is handled through c-as-c this can be removed and replaced with 'image'.
       context: ./master
-      args:
-        JAVA_OPTS: '-Djenkins.CLI.disabled=true' #Disable remoting cli. TODO: This can be done via casc and jenkins.yaml
     ports: 
       - 80:8080
       - 50000:50000
