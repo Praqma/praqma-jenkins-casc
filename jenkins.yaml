@@ -51,21 +51,22 @@ jenkins:
 credentials:
   system:
     domainCredentials:
-      - usernamePassword:
-          scope:    SYSTEM
-          id:       github-user
-          username: ReleasePraqma
-          # The key 'github' resolved from a docker secret defined in docker-compose.yml
-          password: ${github}
-      - basicSSHUserPrivateKey:
-          scope: SYSTEM
-          id: agent-private-key
-          username: agentuser
-          passphrase: 
-          description: "ssh private key used to connect ssh slaves"
-          privateKeySource:
-            directEntry: # The key 'agent_private_key' resolved from a docker secret defined in docker-compose.yml          
-              privateKey: ${agent_private_key}
+      - credentials:
+          - usernamePassword:
+              scope:    SYSTEM
+              id:       github-user
+              username: ReleasePraqma
+              # The key 'github' resolved from a docker secret defined in docker-compose.yml
+              password: ${github}
+          - basicSSHUserPrivateKey:
+              scope: SYSTEM
+              id: agent-private-key
+              username: agentuser
+              passphrase: 
+              description: "ssh private key used to connect ssh slaves"
+              privateKeySource:
+                directEntry: # The key 'agent_private_key' resolved from a docker secret defined in docker-compose.yml          
+                  privateKey: ${agent_private_key}
 jobs:
   - >
       multibranchPipelineJob('demo1-example') {
