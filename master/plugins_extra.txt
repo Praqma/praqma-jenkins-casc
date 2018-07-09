@@ -1,5 +1,5 @@
-credentials:2.1.16
-git:3.8.0
+credentials:2.1.17
+git:3.9.0
 ssh-slaves:1.26
 warnings:4.66
 matrix-auth:2.2
