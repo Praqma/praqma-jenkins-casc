@@ -6,3 +6,12 @@ matrix-auth:2.2
 job-dsl:1.68
 workflow-aggregator:2.5
 timestamper:1.8.9
+github-oauth:0.29
+pretested-integration:3.0.1
+envinject:2.1.6
+text-finder:1.10
+email-ext:2.62
+slack:2.3
+parameterized-trigger:2.35.2
+copyartifact:1.41
+htmlpublisher:1.16

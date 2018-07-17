@@ -1,11 +1,20 @@
 jenkins:
   systemMessage: "Welcome to the demo setup for Jenkins Configuration as Code plugin. For more information look in the official repo with our demo setup: https://github.com/Praqma/praqma-jenkins-casc"
+  agentProtocols:
+    - "JNLP4-connect" 
   securityRealm:
     local:
       allowsSignup: false
       users:
        - id: demoAdmin
          password: ${adminpw:-passw0rd}
+    #TODO: This works just needs proper clientID and clientSecret for github
+    #github:
+      #clientID: ${github_oauth_client_id}
+      #clientSecret: ${github_oauth_client_secret}
+      #githubApiUri: "https://api.github.com"
+      #githubWebUri: "https://github.com"
+      #oauthScopes: "read:org,user:email"
   authorizationStrategy:
     globalMatrix:
       grantedPermissions:
@@ -16,7 +25,11 @@ jenkins:
            - "View/Read"
         - name: "authenticated"
           permissions:
-           - "Overall/Administer"
+          - "Overall/Administer"
+        #Grant accesss to Praqma organisation COMMENT IN WHEN SERVER IS UP
+        #- name: "Praqma"
+          #permissions:
+           #- "Overall/Administer"
   crumbIssuer:
     standard:
 #  nodes:
@@ -67,25 +80,18 @@ credentials:
               privateKeySource:
                 directEntry: # The key 'agent_private_key' resolved from a docker secret defined in docker-compose.yml          
                   privateKey: ${agent_private_key}
-jobs:
-  - >
-      multibranchPipelineJob('demo1-example') {
-        description("Example job that uses and configures the warnings plugin and makes use of a global library")
-        branchSources {
-          git {
-            remote('https://github.com/Praqma/praqma-jenkins-casc-demo1-example')
-          }
-        }
-      }
-  - > 
-      multibranchPipelineJob('Configuration as Code plugin') {
-        description("Building the configuration as code plugin from jenkins-ci.org")
-        branchSources {
-          git {
-            remote('https://github.com/jenkinsci/configuration-as-code-plugin.git')
-          }
-        }
-      }
+ 
+#TODO:Comment out when running                 
+#jobs: 
+#  - url: https://raw.githubusercontent.com/Praqma/job-dsl-collection/master/configuration-as-code-dsl/pipeline.dsl #casc
+#  - url: https://raw.githubusercontent.com/Praqma/memory-map-plugin/master/jenkins-pipeline/pipeline.groovy #memory map
+#  - url: https://raw.githubusercontent.com/Praqma/codesonar-plugin/master/jenkins-pipeline/pipeline.groovy #codesonar
+#  - url: https://raw.githubusercontent.com/Praqma/pretested-integration-plugin/master/jenkins-pipeline/pipeline.groovy #pretested integration
+#  - url: https://raw.githubusercontent.com/Praqma/ClearCaseUCMPlugin/master/jenkins-pipeline/pipeline.groovy #ccucm 
+#  - url: https://raw.githubusercontent.com/Praqma/Praqmatic-Automated-Changelog/master/jenkins-pipeline/pipeline.groovy #pac
+#  - url: https://raw.githubusercontent.com/Praqma/PlusBump/rebirth/jenkins-pipeline/pipeline.groovy #plusbum
+#  - url: https://raw.githubusercontent.com/Praqma/job-dsl-collection/master/web-pipeline-dsl/web_pipeline_dsl.groovy #websites
+#  - file: ./jobdsl/rut.groovy #rut (private repo...better keep it here)
 
 tool:
   git:
@@ -98,33 +104,82 @@ security:
     enabled: false
 
 unclassified:
+  location:
+    url: https://jenkins.praqma.cloud
+    adminAddress: support@praqma.net  
   warnings:
     parsers:
-      - name: "Example parser"
-        linkName: "Example parser link"
-        trendName: "Example parser trend name"
-        regexp: "^\\s*(.*):(\\d+):(.*):\\s*(.*)$"
+      - name: "LinkChecker CSV (Jekyll flavor)"
+        linkName: "Jekyll LinkChecker"
+        trendName: "LinkChecker CSV (Jekyll flavor)"
+        regexp: "([^\\n;]*?(?=;))?;([^;]*?(?=;))?;([^;]*?(?=;))?;([^;]*?(?=;))?;([^;]*?(?=;))?;([^;]*?(?=;))?;([^;]*?(?=;))?;([^;]*?(?=;))?;([^;]*?(?=;))?;([^;]*?(?=;))?;([^;]*?(?=;))?;([^;]*?(?=;))?;([^;]*?(?=;))?;([^;]*?(?=;))?;([^;]*?(?=;))?;([^;]*?(?=;))?;([^\\n]*)"
         script: |
+          import hudson.plugins.analysis.util.model.Priority
           import hudson.plugins.warnings.parser.Warning
-          String fileName = matcher.group(1)
-          String lineNumber = matcher.group(2)
-          String category = matcher.group(3)
-          String message = matcher.group(4)
-          return new Warning(fileName, Integer.parseInt(lineNumber), "Dynamic Parser", category, message);
-        example: "somefile.txt:2:SeriousWarnings:SomethingWentWrong"        
+
+          def obj = [
+                  url          : matcher.group(1),
+                  parentUrl    : matcher.group(2),
+                  baseRef      : matcher.group(3),
+                  result       : matcher.group(4),
+                  warningString: matcher.group(5),
+                  infoString   : matcher.group(6),
+                  valid        : matcher.group(7),
+                  fullUrl      : matcher.group(8),
+                  line         : matcher.group(9),
+                  column       : matcher.group(10),
+                  name         : matcher.group(11),
+                  dlTime       : matcher.group(12),
+                  dlSize       : matcher.group(13),
+                  checkTime    : matcher.group(14),
+                  cached       : matcher.group(15),
+                  level        : matcher.group(16),
+                  modified     : matcher.group(17)
+          ]
+
+          String jekyllTarget = "_site"
+          String defaultIndex = "index.html"
+          String source = obj.parentUrl
+
+          def line = obj.line.toInteger()
+          def type = obj.level
+          def category = obj.result
+
+          message = "$obj.fullUrl: ($obj.result) $obj.warningString - $obj.infoString"
+
+          def priority = null
+          if ( category.equalsIgnoreCase("ignored"))
+             if (obj.warningString != null && obj.warningString != "" ){
+                priority = Priority.HIGH
+                category = "warning"
+             }  else
+                priority = Priority.LOW
+          else
+             priority = Priority.NORMAL
+
+          if (obj.valid.equalsIgnoreCase("false"))
+              priority = Priority.HIGH
+            
+          return new Warning(source, line, type, category, message, priority)
+        example: ""        
   globalLibraries:
     libraries:
-      - name: "demo-lib"
-        retriever:
-          modernSCM:
-            scm:
-              git:
-                remote: "https://github.com/Praqma/praqma-jenkins-casc-shared-lib-demo"
-      - name: "jenkins-infra"
+      - name: "praqma-shared@master"
         implicit: true
         defaultVersion: "master"
         retriever:
           modernSCM:
             scm:
               git:
-                remote: "https://github.com/jenkins-infra/pipeline-library"           
+                remote: "https://github.com/Praqma/shared-pipeline.git"
+#plugins:
+#  required:
+#    credentials: 2.1.17
+#    git: 3.9.0
+#    ssh-slaves: 1.26
+#    warnings: 4.66
+#    matrix-auth: 2.2
+#    job-dsl: 1.68
+#    workflow-aggregator: 2.5
+#    timestamper: 1.8.9
+

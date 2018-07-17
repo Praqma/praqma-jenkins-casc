@@ -1,16 +1,6 @@
 version: '3.3'
 
 services:
-  #jnlp-agent:
-  #  depends_on:
-  #    - jenkins
-  #  image: jenkins/jnlp-slave  
-  #  command: -url http://jenkins:8080 
-  #  restart: always
-  #  environment:
-  #    JAVA_OPTS: "-Djava.awt.headless=true"
-  #    JENKINS_SECRET: "cf7d7136bae12e417f87564249517ba94a2332879f40dbbc994b09736b5b8539" 
-  #    JENKINS_AGENT_NAME: "build-agent-jnlp"
   jenkins: 
     build: #TODO: Once plugin installation is handled through c-as-c this can be removed and replaced with 'image'.
       context: ./master
@@ -19,12 +9,14 @@ services:
       - 50000:50000
     volumes:
       - jenkins_home:/var/jenkins_home
+      - ./jenkins.yaml:/var/jenkins_home/jenkins.yaml
     secrets:
       - github  #Github username with password as an example. Purpose here is to have a user with write-access for special cases. Like the git-publisher.
       - adminpw  #Initial adminstrator user password. Added for debugging purposes. Should be removed prior to go-live. 
       - agent_private_key #ssh private key for connecting ssh slaves
     environment:
-      - CASC_JENKINS_CONFIG=https://raw.githubusercontent.com/Praqma/praqma-jenkins-casc/master/jenkins.yaml #Use a github repo. Be aware that the raw content is cached, so it can take a couple of mintues to take effect
+      - CASC_JENKINS_CONFIG=/var/jenkins_home/jenkins.yaml #Use a github repo. Be aware that the raw content is cached, so it can take a couple of mintues to take effect
+      #- JAVA_OPTS="-Djava.util.logging.config.file=/var/jenkins_home/log.properties"
 secrets: #Be careful with newlines in your secrets, make sure to remove them before running docker-compose up.
   github:
     file: /var/deploy/secrets/github
