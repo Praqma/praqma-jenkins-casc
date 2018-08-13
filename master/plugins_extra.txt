@@ -2,8 +2,8 @@ credentials:2.1.17
 git:3.9.0
 ssh-slaves:1.26
 warnings:4.66
-matrix-auth:2.2
-job-dsl:1.68
+matrix-auth:2.3
+job-dsl:1.70
 workflow-aggregator:2.5
 timestamper:1.8.9
 github-oauth:0.29
@@ -15,3 +15,4 @@ slack:2.3
 parameterized-trigger:2.35.2
 copyartifact:1.41
 htmlpublisher:1.16
+configuration-as-code-support:1.0-rc1

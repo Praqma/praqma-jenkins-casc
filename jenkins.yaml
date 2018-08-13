@@ -8,88 +8,41 @@ jenkins:
       users:
        - id: demoAdmin
          password: ${adminpw:-passw0rd}
-    #TODO: This works just needs proper clientID and clientSecret for github
-    #github:
-      #clientID: ${github_oauth_client_id}
-      #clientSecret: ${github_oauth_client_secret}
-      #githubApiUri: "https://api.github.com"
-      #githubWebUri: "https://github.com"
-      #oauthScopes: "read:org,user:email"
   authorizationStrategy:
     globalMatrix:
       grantedPermissions:
-        - name: "anonymous"
-          permissions:
-           - "Overall/Read"
-           - "Job/Read"
-           - "View/Read"
-        - name: "authenticated"
-          permissions:
-          - "Overall/Administer"
-        #Grant accesss to Praqma organisation COMMENT IN WHEN SERVER IS UP
-        #- name: "Praqma"
-          #permissions:
-           #- "Overall/Administer"
-  crumbIssuer:
-    standard:
-#  nodes:
-#    - dumb:
-#        labelString: "build jnlp"
-#        mode: NORMAL
-#        name: "build-agent-jnlp"
-#        remoteFS: "/home/agent/ws" 
-#        launcher:
-#          jnlp:
-#            workDirSettings:
-#              disabled: true
-#              workDirPath: 
-#              internalDir:
-#              failIfWorkDirIsMissing: false
-#    - dumb:
-#        labelString: "build ssh"
-#        mode: NORMAL
-#        name: "build-agent-ssh"
-#        remoteFS: "/home/agent/ws" 
-#        launcher:
-#          SSHLauncher:
-#            host: "localhost"
-#            port: 22
-#            credentialsId: agent-private-key
-#            launchTimeoutSeconds: 20
-#            maxNumRetries: 2
-#            retryWaitTime: 15
-#            sshHostKeyVerificationStrategy:
-#              manuallyTrustedKeyVerificationStrategy:
-#                requireInitialManualTrust: false
+        - "Overall/Read:anonymous"
+        - "Job/Read:anonymous"
+        - "View/Read:anonymous"
+        - "Overall/Administer:authenticated"
+  crumbIssuer: standard
 credentials:
   system:
     domainCredentials:
       - credentials:
-          - usernamePassword:
+          - usernamePassword: 
               scope:    SYSTEM
               id:       github-user
               username: ReleasePraqma
-              # The key 'github' resolved from a docker secret defined in docker-compose.yml
               password: ${github}
-          - basicSSHUserPrivateKey:
+          - basicSSHUserPrivateKey: 
               scope: SYSTEM
               id: agent-private-key
               username: agentuser
-              passphrase: 
+              passphrase:  ""
               description: "ssh private key used to connect ssh slaves"
               privateKeySource:
                 directEntry: # The key 'agent_private_key' resolved from a docker secret defined in docker-compose.yml          
                   privateKey: ${agent_private_key}
- 
-#TODO:Comment out when running                 
-#jobs: 
-#  - url: https://raw.githubusercontent.com/Praqma/job-dsl-collection/master/configuration-as-code-dsl/pipeline.dsl #casc
-#  - url: https://raw.githubusercontent.com/Praqma/memory-map-plugin/master/jenkins-pipeline/pipeline.groovy #memory map
-#  - url: https://raw.githubusercontent.com/Praqma/codesonar-plugin/master/jenkins-pipeline/pipeline.groovy #codesonar
-#  - url: https://raw.githubusercontent.com/Praqma/pretested-integration-plugin/master/jenkins-pipeline/pipeline.groovy #pretested integration
-#  - url: https://raw.githubusercontent.com/Praqma/ClearCaseUCMPlugin/master/jenkins-pipeline/pipeline.groovy #ccucm 
-#  - url: https://raw.githubusercontent.com/Praqma/Praqmatic-Automated-Changelog/master/jenkins-pipeline/pipeline.groovy #pac
-#  - url: https://raw.githubusercontent.com/Praqma/PlusBump/rebirth/jenkins-pipeline/pipeline.groovy #plusbum
+                  
+jobs: 
+  - url: https://raw.githubusercontent.com/Praqma/job-dsl-collection/master/configuration-as-code-dsl/pipeline.dsl #casc
+  - url: https://raw.githubusercontent.com/Praqma/memory-map-plugin/master/jenkins-pipeline/pipeline.groovy #memory map
+  - url: https://raw.githubusercontent.com/Praqma/codesonar-plugin/master/jenkins-pipeline/pipeline.groovy #codesonar
+  - url: https://raw.githubusercontent.com/Praqma/pretested-integration-plugin/master/jenkins-pipeline/pipeline.groovy #pretested integration
+  - url: https://raw.githubusercontent.com/Praqma/ClearCaseUCMPlugin/master/jenkins-pipeline/pipeline.groovy #ccucm 
+  - url: https://raw.githubusercontent.com/Praqma/Praqmatic-Automated-Changelog/master/jenkins-pipeline/pipeline.groovy #pac
+  - url: https://raw.githubusercontent.com/Praqma/PlusBump/rebirth/jenkins-pipeline/pipeline.groovy #plusbum
 #  - url: https://raw.githubusercontent.com/Praqma/job-dsl-collection/master/web-pipeline-dsl/web_pipeline_dsl.groovy #websites
 #  - file: ./jobdsl/rut.groovy #rut (private repo...better keep it here)
 

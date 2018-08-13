@@ -16,7 +16,6 @@ services:
       - agent_private_key #ssh private key for connecting ssh slaves
     environment:
       - CASC_JENKINS_CONFIG=/var/jenkins_home/jenkins.yaml #Use a github repo. Be aware that the raw content is cached, so it can take a couple of mintues to take effect
-      #- JAVA_OPTS="-Djava.util.logging.config.file=/var/jenkins_home/log.properties"
 secrets: #Be careful with newlines in your secrets, make sure to remove them before running docker-compose up.
   github:
     file: /var/deploy/secrets/github
