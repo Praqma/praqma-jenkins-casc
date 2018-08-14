@@ -15,4 +15,3 @@ slack:2.3
 parameterized-trigger:2.35.2
 copyartifact:1.41
 htmlpublisher:1.16
-configuration-as-code-support:1.0-rc1

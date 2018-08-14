@@ -1,6 +1,9 @@
+#configuration-as-code:
+#  deprecation: warn
+
 jenkins:
   systemMessage: "Welcome to the demo setup for Jenkins Configuration as Code plugin. For more information look in the official repo with our demo setup: https://github.com/Praqma/praqma-jenkins-casc"
-  agentProtocols:
+  agentProtocols: 
     - "JNLP4-connect" 
   securityRealm:
     local:
@@ -15,7 +18,7 @@ jenkins:
         - "Job/Read:anonymous"
         - "View/Read:anonymous"
         - "Overall/Administer:authenticated"
-  crumbIssuer: standard
+  crumbIssuer: "standard"
 credentials:
   system:
     domainCredentials:
@@ -42,7 +45,7 @@ jobs:
   - url: https://raw.githubusercontent.com/Praqma/pretested-integration-plugin/master/jenkins-pipeline/pipeline.groovy #pretested integration
   - url: https://raw.githubusercontent.com/Praqma/ClearCaseUCMPlugin/master/jenkins-pipeline/pipeline.groovy #ccucm 
   - url: https://raw.githubusercontent.com/Praqma/Praqmatic-Automated-Changelog/master/jenkins-pipeline/pipeline.groovy #pac
-  - url: https://raw.githubusercontent.com/Praqma/PlusBump/rebirth/jenkins-pipeline/pipeline.groovy #plusbum
+  - url: https://raw.githubusercontent.com/Praqma/PlusBump/rebirth/jenkins-pipeline/pipeline.groovy #plusbump
 #  - url: https://raw.githubusercontent.com/Praqma/job-dsl-collection/master/web-pipeline-dsl/web_pipeline_dsl.groovy #websites
 #  - file: ./jobdsl/rut.groovy #rut (private repo...better keep it here)
 
