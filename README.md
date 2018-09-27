@@ -1,5 +1,5 @@
 # praqma-jenkins-casc
-Repository for our casc demo setup 
+Repository for our JCasC demo setup 
 
 ## Requirements
 
