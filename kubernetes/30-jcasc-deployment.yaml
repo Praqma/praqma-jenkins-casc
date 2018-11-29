@@ -1,0 +1,108 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jenkins
+  namespace: jcasc
+  labels:
+    app: jenkins
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jenkins
+  template:
+    metadata:
+      labels:
+        app: jenkins
+    spec:
+      volumes:
+      - name: github-secret-user
+        secret:
+          secretName: github
+          items:
+            - key: github_user
+              path: github_user
+
+      - name: jcasc-config
+        configMap:
+          name: jcasc-configmap
+          items:
+            - key: jenkins.yaml
+              path: jenkins.yaml
+
+      - name: jenkins-home
+        persistentVolumeClaim:
+          claimName: jenkins-pv-claim
+
+      - name: github-secret-pass
+        secret:
+          secretName: github
+          items:
+            - key: github_pass
+              path: github_pass
+
+      - name: adminpw-secret
+        secret:
+          secretName: adminpw
+          items:
+            - key: adminpw
+              path: adminpw
+      - name: agent-private-key-secret
+        secret:
+          secretName: agent-private-key
+          items:
+            - key: id_rsa
+              path: agent_private_key
+      containers:
+        - image: figaw/jcasc    # Created with 'docker build -t figaw/jcasc ./master'
+          name: jenkins
+          ports:
+            - containerPort: 8080
+            - containerPort: 50000
+          volumeMounts:
+
+          - name: jenkins-home
+            mountPath: /var/jenkins_home
+          - name: jcasc-config
+            mountPath: /var/jenkins_home/jenkins.yaml
+            subPath: jenkins.yaml
+
+          - name: github-secret-user
+            mountPath: /run/secrets/github_user
+            subPath: github_user
+          - name: github-secret-pass
+            mountPath: /run/secrets/github_pass
+            subPath: github_pass
+
+          - name: adminpw-secret
+            mountPath: /run/secrets/adminpw
+            subPath: adminpw
+          - name: agent-private-key-secret
+            mountPath: /run/secrets/agent_private_key
+            subPath: agent_private_key
+          env:
+          - name: CASC_JENKINS_CONFIG
+            value: "/var/jenkins_home/jenkins.yaml" #Use a github repo. Be aware that the raw content is cached, so it can take a couple of mintues to take effect
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: jenkins
+  namespace: jcasc
+  labels:
+    app: jenkins
+spec:
+  ports:
+  - port: 80
+    name: ui
+    protocol: TCP
+    targetPort: 8080
+  - port: 50000
+    name: agents
+    protocol: TCP
+    targetPort: 50000
+  type: NodePort
+  selector:
+    app: jenkins
