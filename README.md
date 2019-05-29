@@ -5,14 +5,9 @@ Repository for our JCasC demo setup
 
 First off we require docker-compose. Tested with `docker-compose version 1.20.1`. 
 
-The demo we've prepared here also expects two secrets (files) to be present:
+The demo cofiguration we've prepared is not using any secrets. Default user we create has secrets in configuration section in casc_configs/jenkins.yaml (lines 16 and 17) but since we do not expect you to do ANYTHING other than running docker-compose to get Jenkins up, the secret related sections in docker-compose.yml are commented and we'll use default hardcoded values for demo purpose.
 
-1. `/var/deploy/secrets/github` 
-2. `/var/deploy/secrets/adminpw`
-
-The first one is a secret for your github user account (One with write access) to github repositories. For this demo we've used our own user `ReleasePraqma` and provided the appropriate password. This user has write access so that we can push tags etc. with the Git Publisher plugin. 
-
-The second password is for the one Admin user we add to our server with the id `demoAdmin`. This `demoAdmin` user is added for debugging purposes.  
+If you're familiar with docker secrets you can provide actual secrets - remember to update docker-compose.yml
 
 ## First boot 
 
@@ -20,22 +15,10 @@ This is very simple, using docker-compose execute the following command from the
 
 `docker-compose up --build`
 
-This will start up a Jenkins instance which will be accessible on the host through port 80.
+This will start up a Jenkins instance which will be accessible on the host through port 80, just open your browser and navigate to http://localhost
 
-What you might want to change though is the configuration file used by the Configuration as Code plugin. Currently it points to our own `jenkins.yaml` file hosted on GitHub. 
+What you might want to change though is the configuration file used by the Configuration as Code plugin. Currently `CASC_JENKINS_CONFIG` points to `casc_configs` folder with initial, basic configuration files. You're good to go with those but feel free to change the configuration and see how it works.
 
-Change this to a more approriate link that contains your own setup. 
+Any time you change you're configuration files on host machine you need to reload it in Jenkins:
 
-```
-    environment:
-      - CASC_JENKINS_CONFIG=https://raw.githubusercontent.com/Praqma/praqma-jenkins-casc/master/jenkins.yaml
-```
-That should be it. Once you've pointed to your own config file you're done!
-
-## Alternative configuration source
-
-If you don't have anywhere to host your configuration file, you can mount your configuration file into the service using docker compose and point to the file using a local path instead. Like so:
-```
-    environment:
-      - CASC_JENKINS_CONFIG=/path/to/my/jenkins.yaml
-```
+Manage Jenkins -> Configuration as Code -> Reload existing configuration
