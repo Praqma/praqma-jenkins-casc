@@ -5,8 +5,10 @@ pipeline {
 
     stages {
         stage('Checkout') {
-            steps {
-                echo 'Pulling latest from stash'
+            dir(env.CASC_REPO) {
+                steps {
+                    checkout scm
+                }
             }
         }
     }
