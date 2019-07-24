@@ -5,9 +5,11 @@ pipeline {
 
     stages {
         stage('Checkout') {
-                steps {
+            steps {
+                dir(env.CASC_REPO) {
                     checkout scm
                 }
             }
+        }
     }
 }
