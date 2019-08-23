@@ -1,5 +1,5 @@
 jobs:
   - url: https://raw.githubusercontent.com/Praqma/job-dsl-collection/master/configuration-as-code-dsl/pipeline.dsl #casc
-  - file: /var/jenkins_conf/jobs.groovy
+ # - file: /var/jenkins_conf/jobs.groovy
   - script: >
       job('123456')
