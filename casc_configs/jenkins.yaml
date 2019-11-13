@@ -1,8 +1,5 @@
-#configuration-as-code:
-#  deprecation: warn
-
 jenkins:
-  systemMessage: "The demo setup for Jenkins Configuration as Code plugin.\n\n"
+  systemMessage: "\n\nDemo setup for Jenkins Configuration as Code plugin......\n\n"
 
   numExecutors: 1
   mode: NORMAL
@@ -13,7 +10,7 @@ jenkins:
     local:
       allowsSignup: false
       users:
-       - id: ${adminuser:-demoAdmin}
+       - id: admin
          password: ${adminpw:-passw0rd}
 
   authorizationStrategy:
@@ -22,37 +19,28 @@ jenkins:
         - "Overall/Read:anonymous"
         - "Job/Read:anonymous"
         - "View/Read:anonymous"
-        - "Overall/Administer:authenticated"
+        - "Overall/Administer:anonymous"
 
   crumbIssuer: "standard"
 
   remotingSecurity:
     enabled: true    
 
-# credentials:
-#   system:
-#     domainCredentials:
-#       - credentials:
-#           - usernamePassword:
-#               scope:    SYSTEM
-#               id:       github-user
-#               username: ${github_user}
-#               password: ${github_pass}
-#           - basicSSHUserPrivateKey:
-#               scope: SYSTEM
-#               id: agent-private-key
-#               username: agentuser
-#               passphrase:  ""
-#               description: "ssh private key used to connect ssh slaves"
-#               privateKeySource:
-#                 directEntry: # The key 'agent_private_key' resolved from a docker secret defined in docker-compose.yml
-#                   privateKey: ${agent_private_key}
+credentials:
+  system:
+    domainCredentials:
+      - credentials:
+        - usernamePassword:
+            scope:    GLOBAL
+            id:       github-user
+            username: ewelina
+            password: ${github:-githubPassw0rd}
+            description: github username/password  
 
 tool:
   git:
     installations:
       - name: Default
         home: "git"
-
 
 

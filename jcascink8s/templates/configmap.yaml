@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: jcasc-configmap
-  namespace: jcasc
-data:
-{{ (.Files.Glob "jenkins.yaml").AsConfig | indent 2 }}

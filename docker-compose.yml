@@ -2,13 +2,13 @@ version: '3.3'
 
 services:
   jenkins: 
-    build: #TODO: Once plugin installation is handled through c-as-c this can be removed and replaced with 'image'.
+    build: 
       context: ./master
     ports: 
       - 80:8080
       - 50000:50000
     volumes:
-      - jenkins_home:/var/jenkins_home
+      - jenkins_home_summit:/var/jenkins_home
       - ./casc_configs:/var/jenkins_conf
     # secrets:
     #   - github  #Github username with password as an example. Purpose here is to have a user with write-access for special cases. Like the git-publisher.
@@ -18,10 +18,10 @@ services:
       - CASC_JENKINS_CONFIG=/var/jenkins_conf
 # secrets: #Be careful with newlines in your secrets, make sure to remove them before running docker-compose up.
 #   github:
-#     file: /var/deploy/secrets/github
+#     file: /var/praqma-jenkins-casc/secrets/github
 #   adminpw:
-#     file: /var/deploy/secrets/adminpw
+#     file: /var/praqma-jenkins-casc/secrets/adminpw
 #   agent_private_key: #This should point to the private key you want your jenkins master to use when connecting to slaves. So in AWS for example this would be your .pem file
 #     file: ~/.ssh/id_rsa
 volumes:
-  jenkins_home:
+  jenkins_home_summit:

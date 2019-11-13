@@ -1,13 +1,13 @@
 # praqma-jenkins-casc
-Repository for our JCasC demo setup 
+Repository for our JCasC demo setup.
 
 ## Requirements
 
 First off we require docker-compose. Tested with `docker-compose version 1.20.1`. 
 
-The demo cofiguration we've prepared is not using any secrets. Default user we create has secrets in configuration section in casc_configs/jenkins.yaml (lines 16 and 17) but since we do not expect you to do ANYTHING other than running docker-compose to get Jenkins up, the secret related sections in docker-compose.yml are commented and we'll use default hardcoded values for demo purpose.
+The demo configuration we've prepared doesn't require you to use any secrets. Default user we create has secrets in configuration section in casc_configs/jenkins.yaml (lines 13-14) but since we do not expect you to do ANYTHING other than running docker-compose to get Jenkins up, the secret related sections in docker-compose.yml are commented and we'll use default hardcoded values for demo purpose. Same goes for `usernamePassword` credentials (lines 33-38)
 
-If you're familiar with docker secrets you can provide actual secrets - remember to update docker-compose.yml
+If you're familiar with docker secrets you can provide actual secrets - remember to update docker-compose.yml with the actual path to your secrets
 
 ## First boot 
 
