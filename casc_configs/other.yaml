@@ -1,16 +1,4 @@
 unclassified:
   location:
     url: http://localhost
-    adminAddress: support@praqma.net
-  
-  globalLibraries:
-    libraries:
-      - name: "praqma-shared@master"
-        implicit: true
-        defaultVersion: "master"
-        retriever:
-          modernSCM:
-            scm:
-              git:
-                remote: "https://github.com/Praqma/shared-pipeline.git"
-                
+    adminAddress: support@praqma.net              
